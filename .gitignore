@@ -1,0 +1,26 @@
+# Operating system metadata
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+
+# Node
+node_modules
+
+# Local editor settings and temporary files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Local environment configuration
+.env
+.env.*
+!.env.example
+
+# Local server logs
+*.log
+
+# Temporary Markdown build output
+.index.html.tmp
