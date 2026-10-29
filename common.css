@@ -1,0 +1,969 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css');
+/* cspell:disable-file */
+
+/* webkit printing magic: print all background colors */
+html {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+a,
+a.visited {
+  color: inherit;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+.sans {
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display",
+    "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji",
+    "Segoe UI Symbol";
+}
+
+/* =========================================================
+   Paper pages (SDFT / SDPO): scope notion-export styles
+   ========================================================= */
+
+@media only screen {
+  body.paper {
+    margin: 2em auto;
+    max-width: 900px;
+    color: rgb(55, 53, 47);
+  }
+}
+
+body.paper {
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+body.paper a,
+body.paper a.visited {
+  text-decoration: underline;
+}
+
+body.paper .pdf-relative-link-path {
+  font-size: 80%;
+  color: #444;
+}
+
+body.paper .page-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 0.75em;
+}
+
+body.paper h1 {
+  font-size: 1.875rem;
+  margin-top: 1.875rem;
+}
+
+body.paper h2 {
+  font-size: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+body.paper h3 {
+  font-size: 1.25rem;
+  margin-top: 1.25rem;
+}
+
+body.paper .source {
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 1.5em;
+  word-break: break-all;
+}
+
+body.paper .callout {
+  border-radius: 3px;
+  padding: 1rem;
+}
+
+body.paper figure {
+  margin: 1.25em 0;
+  page-break-inside: avoid;
+}
+
+body.paper figcaption {
+  opacity: 0.5;
+  font-size: 85%;
+  margin-top: 0.5em;
+}
+
+body.paper mark {
+  background-color: transparent;
+}
+
+body.paper .indented {
+  padding-left: 1.5em;
+}
+
+body.paper hr {
+  background: transparent;
+  display: block;
+  width: 100%;
+  height: 1px;
+  visibility: visible;
+  border: none;
+  border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+body.paper img {
+  max-width: 100%;
+}
+
+@media only print {
+  body.paper img {
+    max-height: 100vh;
+    object-fit: contain;
+  }
+}
+
+@page {
+  margin: 1in;
+}
+
+body.paper .collection-content {
+  font-size: 0.875rem;
+}
+
+body.paper .collection-content td {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+body.paper .column-list {
+  display: flex;
+  justify-content: space-between;
+}
+
+body.paper .column {
+  padding: 0 1em;
+}
+
+body.paper .column:first-child {
+  padding-left: 0;
+}
+
+body.paper .column:last-child {
+  padding-right: 0;
+}
+
+body.paper .table_of_contents-item {
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.3;
+  padding: 0.125rem;
+}
+
+body.paper .table_of_contents-indent-1 {
+  margin-left: 1.5rem;
+}
+
+body.paper .table_of_contents-indent-2 {
+  margin-left: 3rem;
+}
+
+body.paper .table_of_contents-indent-3 {
+  margin-left: 4.5rem;
+}
+
+body.paper .table_of_contents-link {
+  text-decoration: none;
+  opacity: 0.7;
+  border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+body.paper table,
+body.paper th,
+body.paper td {
+  border: 1px solid rgba(55, 53, 47, 0.09);
+  border-collapse: collapse;
+}
+
+body.paper table {
+  border-left: none;
+  border-right: none;
+}
+
+body.paper th,
+body.paper td {
+  font-weight: normal;
+  padding: 0.25em 0.5em;
+  line-height: 1.5;
+  min-height: 1.5em;
+  text-align: left;
+}
+
+body.paper th {
+  color: rgba(55, 53, 47, 0.6);
+}
+
+body.paper ol,
+body.paper ul {
+  margin: 0;
+  margin-block-start: 0.6em;
+  margin-block-end: 0.6em;
+}
+
+body.paper li > ol:first-child,
+body.paper li > ul:first-child {
+  margin-block-start: 0.6em;
+}
+
+body.paper ul > li {
+  list-style: disc;
+}
+
+body.paper ul.to-do-list {
+  padding-inline-start: 0;
+}
+
+body.paper ul.to-do-list > li {
+  list-style: none;
+}
+
+body.paper .to-do-children-checked {
+  text-decoration: line-through;
+  opacity: 0.375;
+}
+
+body.paper ul.toggle > li {
+  list-style: none;
+}
+
+body.paper ul {
+  padding-inline-start: 1.7em;
+}
+
+body.paper ul > li {
+  padding-left: 0.1em;
+}
+
+body.paper ol {
+  padding-inline-start: 1.6em;
+}
+
+body.paper ol > li {
+  padding-left: 0.2em;
+}
+
+body.paper .mono ol {
+  padding-inline-start: 2em;
+}
+
+body.paper .mono ol > li {
+  text-indent: -0.4em;
+}
+
+body.paper .toggle {
+  padding-inline-start: 0em;
+  list-style-type: none;
+}
+
+/* Indent toggle children */
+body.paper .toggle > li > details {
+  padding-left: 1.7em;
+}
+
+body.paper .toggle > li > details > summary {
+  margin-left: -1.1em;
+}
+
+body.paper .selected-value {
+  display: inline-block;
+  padding: 0 0.5em;
+  background: rgba(206, 205, 202, 0.5);
+  border-radius: 3px;
+  margin-right: 0.5em;
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
+  white-space: nowrap;
+}
+
+body.paper .collection-title {
+  display: inline-block;
+  margin-right: 1em;
+}
+
+body.paper .page-description {
+  margin-bottom: 2em;
+}
+
+body.paper .simple-table {
+  margin-top: 1em;
+  font-size: 0.875rem;
+  empty-cells: show;
+}
+
+body.paper .simple-table td {
+  height: 29px;
+  min-width: 120px;
+}
+
+body.paper .simple-table th {
+  height: 29px;
+  min-width: 120px;
+}
+
+body.paper .simple-table-header-color {
+  background: rgb(247, 246, 243);
+  color: black;
+}
+
+body.paper .simple-table-header {
+  font-weight: 500;
+}
+
+body.paper time {
+  opacity: 0.5;
+}
+
+body.paper .icon {
+  display: inline-block;
+  max-width: 1.2em;
+  max-height: 1.2em;
+  text-decoration: none;
+  vertical-align: text-bottom;
+  margin-right: 0.5em;
+}
+
+body.paper img.icon {
+  border-radius: 3px;
+}
+
+body.paper .user-icon {
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 100%;
+  margin-right: 0.5rem;
+}
+
+body.paper .user-icon-inner {
+  font-size: 0.8em;
+}
+
+body.paper .text-icon {
+  border: 1px solid #000;
+  text-align: center;
+}
+
+body.paper .page-cover-image {
+  display: block;
+  object-fit: cover;
+  width: 100%;
+  max-height: 30vh;
+}
+
+body.paper .page-header-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+body.paper .page-header-icon-with-cover {
+  margin-top: -0.72em;
+  margin-left: 0.07em;
+}
+
+body.paper .page-header-icon img {
+  border-radius: 3px;
+}
+
+body.paper .link-to-page {
+  margin: 1em 0;
+  padding: 0;
+  border: none;
+  font-weight: 500;
+}
+
+body.paper p > .user {
+  opacity: 0.5;
+}
+
+body.paper td > .user,
+body.paper td > time {
+  white-space: nowrap;
+}
+
+body.paper input[type="checkbox"] {
+  transform: scale(1.5);
+  margin-right: 0.6em;
+  vertical-align: middle;
+}
+
+body.paper p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body.paper .image {
+  border: none;
+  margin: 1.5em 0;
+  padding: 0;
+  border-radius: 0;
+  text-align: center;
+}
+
+body.paper .code,
+body.paper code {
+  background: rgba(135, 131, 120, 0.15);
+  border-radius: 3px;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-size: 85%;
+  tab-size: 2;
+}
+
+body.paper code {
+  color: #eb5757;
+}
+
+body.paper .code {
+  padding: 1.5em 1em;
+}
+
+body.paper .code-wrap {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+body.paper .code > code {
+  background: none;
+  padding: 0;
+  font-size: 100%;
+  color: inherit;
+}
+
+body.paper blockquote {
+  font-size: 1em;
+  margin: 1em 0;
+  padding-left: 1em;
+  border-left: 3px solid rgb(55, 53, 47);
+}
+
+body.paper blockquote.quote-large {
+  font-size: 1.25em;
+}
+
+body.paper .bookmark {
+  text-decoration: none;
+  max-height: 8em;
+  padding: 0;
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}
+
+body.paper .bookmark-title {
+  font-size: 0.85em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 1.75em;
+  white-space: nowrap;
+}
+
+body.paper .bookmark-text {
+  display: flex;
+  flex-direction: column;
+}
+
+body.paper .bookmark-info {
+  flex: 4 1 180px;
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+body.paper .bookmark-image {
+  width: 33%;
+  flex: 1 1 180px;
+  display: block;
+  position: relative;
+  object-fit: cover;
+  border-radius: 1px;
+}
+
+body.paper .bookmark-description {
+  color: rgba(55, 53, 47, 0.6);
+  font-size: 0.75em;
+  overflow: hidden;
+  max-height: 4.5em;
+  word-break: break-word;
+}
+
+body.paper .bookmark-href {
+  font-size: 0.75em;
+  margin-top: 0.25em;
+}
+
+body.paper .sans {
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display",
+    "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji",
+    "Segoe UI Symbol";
+}
+
+body.paper .code {
+  font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier,
+    monospace;
+}
+
+body.paper .serif {
+  font-family: Lyon-Text, Georgia, ui-serif, serif;
+}
+
+body.paper .mono {
+  font-family: iawriter-mono, Nitti, Menlo, Courier, monospace;
+}
+
+body.paper .pdf .sans {
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display",
+    "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji",
+    "Segoe UI Symbol", "Twemoji", "Noto Color Emoji", "Noto Sans CJK JP";
+}
+
+body.paper .pdf:lang(zh-CN) .sans {
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display",
+    "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji",
+    "Segoe UI Symbol", "Twemoji", "Noto Color Emoji", "Noto Sans CJK SC";
+}
+
+body.paper .pdf:lang(zh-TW) .sans {
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display",
+    "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji",
+    "Segoe UI Symbol", "Twemoji", "Noto Color Emoji", "Noto Sans CJK TC";
+}
+
+body.paper .pdf:lang(ko-KR) .sans {
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display",
+    "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji",
+    "Segoe UI Symbol", "Twemoji", "Noto Color Emoji", "Noto Sans CJK KR";
+}
+
+body.paper .pdf .code {
+  font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono",
+    Courier, monospace, "Twemoji", "Noto Color Emoji", "Noto Sans Mono CJK JP";
+}
+
+body.paper .pdf:lang(zh-CN) .code {
+  font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono",
+    Courier, monospace, "Twemoji", "Noto Color Emoji", "Noto Sans Mono CJK SC";
+}
+
+body.paper .pdf:lang(zh-TW) .code {
+  font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono",
+    Courier, monospace, "Twemoji", "Noto Color Emoji", "Noto Sans Mono CJK TC";
+}
+
+body.paper .pdf:lang(ko-KR) .code {
+  font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono",
+    Courier, monospace, "Twemoji", "Noto Color Emoji", "Noto Sans Mono CJK KR";
+}
+
+body.paper .pdf .serif {
+  font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, "Twemoji", "Noto Color Emoji",
+    "Noto Serif CJK JP";
+}
+
+body.paper .pdf:lang(zh-CN) .serif {
+  font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, "Twemoji", "Noto Color Emoji",
+    "Noto Serif CJK SC";
+}
+
+body.paper .pdf:lang(zh-TW) .serif {
+  font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, "Twemoji", "Noto Color Emoji",
+    "Noto Serif CJK TC";
+}
+
+body.paper .pdf:lang(ko-KR) .serif {
+  font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, "Twemoji", "Noto Color Emoji",
+    "Noto Serif CJK KR";
+}
+
+body.paper .pdf .mono {
+  font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, "Twemoji",
+    "Noto Color Emoji", "Noto Sans Mono CJK JP";
+}
+
+body.paper .pdf:lang(zh-CN) .mono {
+  font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, "Twemoji",
+    "Noto Color Emoji", "Noto Sans Mono CJK SC";
+}
+
+body.paper .pdf:lang(zh-TW) .mono {
+  font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, "Twemoji",
+    "Noto Color Emoji", "Noto Sans Mono CJK TC";
+}
+
+body.paper .pdf:lang(ko-KR) .mono {
+  font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, "Twemoji",
+    "Noto Color Emoji", "Noto Sans Mono CJK KR";
+}
+
+body.paper .highlight-default {
+  color: rgba(50, 48, 44, 1);
+}
+
+body.paper .highlight-gray {
+  color: rgba(115, 114, 110, 1);
+  fill: rgba(115, 114, 110, 1);
+}
+
+body.paper .highlight-brown {
+  color: rgba(159, 107, 83, 1);
+  fill: rgba(159, 107, 83, 1);
+}
+
+body.paper .highlight-orange {
+  color: rgba(217, 115, 13, 1);
+  fill: rgba(217, 115, 13, 1);
+}
+
+body.paper .highlight-yellow {
+  color: rgba(203, 145, 47, 1);
+  fill: rgba(203, 145, 47, 1);
+}
+
+body.paper .highlight-teal {
+  color: rgba(68, 131, 97, 1);
+  fill: rgba(68, 131, 97, 1);
+}
+
+body.paper .highlight-blue {
+  color: rgba(51, 126, 169, 1);
+  fill: rgba(51, 126, 169, 1);
+}
+
+body.paper .highlight-purple {
+  color: rgba(144, 101, 176, 1);
+  fill: rgba(144, 101, 176, 1);
+}
+
+body.paper .highlight-pink {
+  color: rgba(193, 76, 138, 1);
+  fill: rgba(193, 76, 138, 1);
+}
+
+body.paper .highlight-red {
+  color: rgba(205, 60, 58, 1);
+  fill: rgba(205, 60, 58, 1);
+}
+
+body.paper .highlight-default_background {
+  color: rgba(50, 48, 44, 1);
+}
+
+body.paper .highlight-gray_background {
+  background: rgba(248, 248, 247, 1);
+}
+
+body.paper .highlight-brown_background {
+  background: rgba(244, 238, 238, 1);
+}
+
+body.paper .highlight-orange_background {
+  background: rgba(251, 236, 221, 1);
+}
+
+body.paper .highlight-yellow_background {
+  background: rgba(251, 243, 219, 1);
+}
+
+body.paper .highlight-teal_background {
+  background: rgba(237, 243, 236, 1);
+}
+
+body.paper .highlight-blue_background {
+  background: rgba(231, 243, 248, 1);
+}
+
+body.paper .highlight-purple_background {
+  background: rgba(248, 243, 252, 1);
+}
+
+body.paper .highlight-pink_background {
+  background: rgba(252, 241, 246, 1);
+}
+
+body.paper .highlight-red_background {
+  background: rgba(253, 235, 236, 1);
+}
+
+body.paper .block-color-default {
+  color: inherit;
+  fill: inherit;
+}
+
+body.paper .block-color-gray {
+  color: rgba(115, 114, 110, 1);
+  fill: rgba(115, 114, 110, 1);
+}
+
+body.paper .block-color-brown {
+  color: rgba(159, 107, 83, 1);
+  fill: rgba(159, 107, 83, 1);
+}
+
+body.paper .block-color-orange {
+  color: rgba(217, 115, 13, 1);
+  fill: rgba(217, 115, 13, 1);
+}
+
+body.paper .block-color-yellow {
+  color: rgba(203, 145, 47, 1);
+  fill: rgba(203, 145, 47, 1);
+}
+
+body.paper .block-color-teal {
+  color: rgba(68, 131, 97, 1);
+  fill: rgba(68, 131, 97, 1);
+}
+
+body.paper .block-color-blue {
+  color: rgba(51, 126, 169, 1);
+  fill: rgba(51, 126, 169, 1);
+}
+
+body.paper .block-color-purple {
+  color: rgba(144, 101, 176, 1);
+  fill: rgba(144, 101, 176, 1);
+}
+
+body.paper .block-color-pink {
+  color: rgba(193, 76, 138, 1);
+  fill: rgba(193, 76, 138, 1);
+}
+
+body.paper .block-color-red {
+  color: rgba(205, 60, 58, 1);
+  fill: rgba(205, 60, 58, 1);
+}
+
+body.paper .block-color-default_background {
+  color: inherit;
+  fill: inherit;
+}
+
+body.paper .block-color-gray_background {
+  background: rgba(248, 248, 247, 1);
+}
+
+body.paper .block-color-brown_background {
+  background: rgba(244, 238, 238, 1);
+}
+
+body.paper .block-color-orange_background {
+  background: rgba(251, 236, 221, 1);
+}
+
+body.paper .block-color-yellow_background {
+  background: rgba(251, 243, 219, 1);
+}
+
+body.paper .block-color-teal_background {
+  background: rgba(237, 243, 236, 1);
+}
+
+body.paper .block-color-blue_background {
+  background: rgba(231, 243, 248, 1);
+}
+
+body.paper .block-color-purple_background {
+  background: rgba(248, 243, 252, 1);
+}
+
+body.paper .block-color-pink_background {
+  background: rgba(252, 241, 246, 1);
+}
+
+body.paper .block-color-red_background {
+  background: rgba(253, 235, 236, 1);
+}
+
+body.paper .select-value-color-default {
+  background-color: rgba(42, 28, 0, 0.07);
+}
+
+body.paper .select-value-color-gray {
+  background-color: rgba(28, 19, 1, 0.11);
+}
+
+body.paper .select-value-color-brown {
+  background-color: rgba(127, 51, 0, 0.156);
+}
+
+body.paper .select-value-color-orange {
+  background-color: rgba(196, 88, 0, 0.203);
+}
+
+body.paper .select-value-color-yellow {
+  background-color: rgba(209, 156, 0, 0.282);
+}
+
+body.paper .select-value-color-green {
+  background-color: rgba(0, 96, 38, 0.156);
+}
+
+body.paper .select-value-color-blue {
+  background-color: rgba(0, 99, 174, 0.172);
+}
+
+body.paper .select-value-color-purple {
+  background-color: rgba(92, 0, 163, 0.141);
+}
+
+body.paper .select-value-color-pink {
+  background-color: rgba(183, 0, 78, 0.152);
+}
+
+body.paper .select-value-color-red {
+  background-color: rgba(206, 24, 0, 0.164);
+}
+
+body.paper .checkbox {
+  display: inline-flex;
+  vertical-align: text-bottom;
+  width: 16;
+  height: 16;
+  background-size: 16px;
+  margin-left: 2px;
+  margin-right: 5px;
+}
+
+body.paper .checkbox-on {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+body.paper .checkbox-off {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  body.paper {
+    margin: 1em;
+    padding: 0 0.5em;
+  }
+
+  body.paper .page-title {
+    font-size: 1.75rem;
+  }
+
+  body.paper h1 {
+    font-size: 1.5rem;
+  }
+
+  body.paper h2 {
+    font-size: 1.25rem;
+  }
+
+  body.paper h3 {
+    font-size: 1.1rem;
+  }
+
+  body.paper .column-list {
+    flex-direction: column-reverse;
+  }
+
+  body.paper .column {
+    width: 100% !important;
+    padding: 0;
+    margin-bottom: 1em;
+  }
+
+  body.paper .column:first-child {
+    margin-bottom: 0;
+  }
+
+  body.paper figure.image {
+    margin: 1em 0;
+  }
+
+  body.paper pre.code {
+    font-size: 0.75rem;
+    padding: 1em 0.75em;
+    overflow-x: auto;
+  }
+}
+
+body.paper .nav-link-wrap {
+  text-align: center;
+  margin-top: 2.5em;
+}
+
+body.paper .button-link,
+body.paper .button-link-plain {
+  text-decoration: none;
+}
+
+body.paper .button-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 1rem 1.2rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  background: #f9fafb;
+  color: inherit;
+  white-space: normal;
+  transition: background 150ms ease, border-color 150ms ease;
+}
+
+body.paper .button-link::after {
+  content: "→";
+  font-size: 1.1em;
+}
+
+body.paper .button-link:hover,
+body.paper .button-link:focus {
+  background: #ffffff;
+  border-color: #cbd5f5;
+}
+
+body.paper .button-link-plain {
+  padding: 1rem 1.2rem;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  color: inherit;
+  transition: color 150ms ease;
+}
+
+body.paper .button-link:hover .button-label,
+body.paper .button-link:focus .button-label,
+body.paper .button-link-plain:hover .button-label,
+body.paper .button-link-plain:focus .button-label {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+body.paper .nav-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
