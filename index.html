@@ -39,14 +39,9 @@
 <h1 class="article-title citation_title">Split Consistency in Decision Models</h1>
 <p class="article-subtitle">Testing decision models for split consistency under the law of total probability</p>
 <div class="article-details">
-<div class="article-details-primary">
-<dl><dt>Authors</dt><dd class="article-authors"><span class="author-list"><span class="author"><a href="https://patrikwolf.github.io">Patrik Wolf</a><sup>1,2,3,4</sup></span><span class="author"><a href="https://thomasklbg.github.io">Thomas Kleine Buening</a><sup>2</sup></span><span class="author"><a href="https://las.inf.ethz.ch/krausea">Andreas Krause</a><sup>2</sup></span><span class="author"><a href="https://celestine.ai">Celestine Mendler-Dünner</a><sup>1,2,3,4</sup></span></span></dd></dl>
-<dl><dt>Published</dt><dd class="article-meta">October 2026</dd></dl>
-</div>
-<dl><dt>Affiliations</dt><dd class="article-affiliations"><sup>1</sup>Max Planck Institute for Intelligent Systems, Tübingen, Germany<br>
-<sup>2</sup>ETH Zürich, Switzerland<br>
-<sup>3</sup>ELLIS Institute, Tübingen, Germany<br>
-<sup>4</sup>Tübingen AI Center, Germany</dd></dl>
+<dl class="article-details-authors"><dt>Authors</dt><dd class="article-authors"><span class="author-list"><span class="author"><a href="https://patrikwolf.github.io">Patrik Wolf</a></span><span class="author"><a href="https://thomasklbg.github.io">Thomas Kleine Buening</a></span><span class="author"><a href="https://las.inf.ethz.ch/krausea">Andreas Krause</a></span><span class="author"><a href="https://celestine.ai">Celestine Mendler-Dünner</a></span></span></dd></dl>
+<dl><dt>Affiliations</dt><dd class="article-affiliations">ETH Zürich, Switzerland</dd></dl>
+<dl class="article-details-published"><dt>Published</dt><dd class="article-meta">October 2026</dd></dl>
 </div>
 </header>
 <div id="preface" class="article-preface">
@@ -67,7 +62,7 @@
       <div class="opening-split opening-panel">
         <h3 id="split-then-aggregate-forecast">Split then aggregate forecast</h3>
         <svg viewBox="0 0 400 302" role="img" aria-labelledby="opening--split-title">
-          <title id="opening--split-title">Probability of playing on clay: 30%, with a 10% chance of winning on clay. Probability of playing on other surfaces: 70%, with a 60% chance of winning on other surfaces. Weighted aggregate: 45%.</title>
+          <title id="opening--split-title">Probability of playing on clay: 30%, with a 10% chance of winning on clay. Probability of not playing on clay: 70%, with a 60% chance of winning when not on clay. Weighted aggregate: 45%.</title>
           <defs><marker id="opening--arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7" fill="none" stroke="#769184" /></marker></defs>
           <g class="opening-branch">
             <rect x="10" y="10" width="180" height="120" rx="9" class="opening-clay-card" />
@@ -77,9 +72,9 @@
           </g>
           <g class="opening-branch">
             <rect x="210" y="10" width="180" height="120" rx="9" class="opening-other-card" />
-            <text x="300" y="34" text-anchor="middle" class="opening-branch-title"><tspan x="300">Chance of winning</tspan><tspan x="300" dy="21" class="opening-condition-label">on other surfaces</tspan></text>
+            <text x="300" y="34" text-anchor="middle" class="opening-branch-title"><tspan x="300">Chance of winning</tspan><tspan x="300" dy="21" class="opening-condition-label">not on clay</tspan></text>
             <text x="300" y="106" text-anchor="middle" class="opening-conditional">60<tspan class="opening-conditional-percent">%</tspan></text>
-            <text x="300" y="148" text-anchor="middle" class="opening-prior"><tspan x="300">Probability of playing</tspan><tspan x="300" dy="18">on other surfaces: <tspan class="opening-prior-value">70%</tspan></tspan></text>
+            <text x="300" y="148" text-anchor="middle" class="opening-prior"><tspan x="300">Probability of playing</tspan><tspan x="300" dy="18">not on clay: <tspan class="opening-prior-value">70%</tspan></tspan></text>
           </g>
           <path d="M100 175 V185 Q100 194 110 194 H190 Q200 194 200 204 M300 175 V185 Q300 194 290 194 H210 Q200 194 200 204 V219" class="opening-flow" marker-end="url(#opening--arrow)" />
           <text x="200" y="245" text-anchor="middle" class="opening-reconstruction-title">Reconstructed overall forecast</text>
@@ -96,7 +91,7 @@
         <div class="opening-comparison-value opening-comparison-aggregate" aria-hidden="true"><strong>45<span>%</span></strong><span>Weighted aggregate</span></div>
       </div>
       <div class="opening-consistency-check">
-        <p class="opening-test-title">Self-Consistency Check</p>
+        <p class="opening-test-title">Split Consistency Check</p>
         <p class="opening-test-equation"><span>Pass if</span><span class="opening-check-math">$|0.55 - 0.45| &lt; \varepsilon$</span><span>for a fixed tolerance $\varepsilon &gt; 0$</span></p>
       </div>
     </div>
