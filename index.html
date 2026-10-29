@@ -1,228 +1,116 @@
-<!DOCTYPE html>
-<!-- Generated from post.md and page.template.html. Edit those files, then run npm run build. -->
-<!-- KaTeX requires the use of the HTML5 doctype. Without it, KaTeX may not render properly -->
-<html lang="en" class="static-article">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Split Consistency in Decision Models</title>
-  <meta name="robots" content="noindex, follow"/>
-  <meta name="description" content="Supplementary evaluations of nine decision models on 28 synthetic forecasting questions reveal split consistency violations across three tolerances."/>
-  <script src="blog-init.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;600&amp;family=Inter:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/katex.min.css" integrity="sha384-Wsr4Nh3yrvMf2KCebJchRJoVo1gTU6kcP05uRSh5NV3sj9+a8IomuJoQzf3sMq4T" crossorigin="anonymous"/>
-  <link rel="stylesheet" href="blog.css"/>
-  <link rel="stylesheet" href="figures.css"/>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/katex.min.js" integrity="sha384-+W9OcrYK2/bD7BmUAk+xeFAyKp0QjyRQUCxeU31dfyTt/FrPsUgaBTLLkVf33qWt" crossorigin="anonymous"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"></script>
-  <script defer src="blog.js"></script>
-  <script defer src="figures.js"></script>
-  <script defer src="rankings.js"></script>
-</head>
-<body>
-  <main class="blog-shell">
-    <header class="mobile-menu-bar">
-      <span class="mobile-menu-label">Contents</span>
-      <button class="mobile-toc-toggle" type="button" aria-expanded="false" aria-controls="table-of-contents" aria-label="Open table of contents">
-        <span aria-hidden="true">&#8203;</span>
-        <span aria-hidden="true">&#8203;</span>
-        <span aria-hidden="true">&#8203;</span>
-      </button>
-    </header>
-    <nav class="toc" id="table-of-contents" aria-label="Table of contents">
-      <ul id="toc-list"></ul>
-    </nav>
-    <article class="article" id="article-root" data-static-article>
-<header class="article-header">
-<h1 class="article-title citation_title">Split Consistency in Decision Models</h1>
-<p class="article-subtitle">Testing decision models for split consistency under the law of total probability</p>
-<div class="article-details">
-<dl class="article-details-authors"><dt>Authors</dt><dd class="article-authors"><span class="author-list"><span class="author"><a href="https://patrikwolf.github.io">Patrik Wolf</a></span><span class="author"><a href="https://thomasklbg.github.io">Thomas Kleine Buening</a></span><span class="author"><a href="https://las.inf.ethz.ch/krausea">Andreas Krause</a></span><span class="author"><a href="https://celestine.ai">Celestine Mendler-Dünner</a></span></span></dd></dl>
-<dl><dt>Affiliations</dt><dd class="article-affiliations">ETH Zürich, Switzerland</dd></dl>
-<dl class="article-details-published"><dt>Published</dt><dd class="article-meta">October 2026</dd></dl>
-</div>
-</header>
-<div id="preface" class="article-preface">
-<div class="visual-abstract-label">Visual abstract</div>
-<figure id="opening" class="interactive-plot core-story-opener-figure"><div class="opening-diagram">
-    <p class="opening-box opening-question">What is the probability that Federer wins against Nadal in a tennis match?</p>
-    <div class="opening-paths" role="group" aria-label="An illustrative tennis forecast: the model predicts a 55% chance of winning directly, but its forecasts on clay and other surfaces imply 45%. The forecasts pass the split consistency check if their absolute difference is less than the threshold epsilon.">
-      <div class="opening-direct opening-panel">
-        <h3 id="the-overall-forecast">The overall forecast</h3>
-        <svg viewBox="0 0 220 150" role="img" aria-labelledby="opening--direct-title">
-          <title id="opening--direct-title">Direct forecast: 55% chance of winning.</title>
-          <text x="110" y="70" text-anchor="middle" class="opening-big">55<tspan class="opening-percent">%</tspan></text>
-          <rect x="30" y="90" width="160" height="9" rx="4.5" class="opening-track" />
-          <rect x="30" y="90" width="88" height="9" rx="4.5" class="opening-direct-fill" />
-          <text x="110" y="126" text-anchor="middle" class="opening-small">Chance of winning</text>
-        </svg>
-      </div>
-      <div class="opening-split opening-panel">
-        <h3 id="split-then-aggregate-forecast">Split then aggregate forecast</h3>
-        <svg viewBox="0 0 400 302" role="img" aria-labelledby="opening--split-title">
-          <title id="opening--split-title">Probability of playing on clay: 30%, with a 10% chance of winning on clay. Probability of not playing on clay: 70%, with a 60% chance of winning when not on clay. Weighted aggregate: 45%.</title>
-          <defs><marker id="opening--arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7" fill="none" stroke="#769184" /></marker></defs>
-          <g class="opening-branch">
-            <rect x="10" y="10" width="180" height="120" rx="9" class="opening-clay-card" />
-            <text x="100" y="34" text-anchor="middle" class="opening-branch-title"><tspan x="100">Chance of winning</tspan><tspan x="100" dy="21" class="opening-condition-label">on clay</tspan></text>
-            <text x="100" y="106" text-anchor="middle" class="opening-conditional">10<tspan class="opening-conditional-percent">%</tspan></text>
-            <text x="100" y="148" text-anchor="middle" class="opening-prior"><tspan x="100">Probability of playing</tspan><tspan x="100" dy="18">on clay: <tspan class="opening-prior-value">30%</tspan></tspan></text>
-          </g>
-          <g class="opening-branch">
-            <rect x="210" y="10" width="180" height="120" rx="9" class="opening-other-card" />
-            <text x="300" y="34" text-anchor="middle" class="opening-branch-title"><tspan x="300">Chance of winning</tspan><tspan x="300" dy="21" class="opening-condition-label">not on clay</tspan></text>
-            <text x="300" y="106" text-anchor="middle" class="opening-conditional">60<tspan class="opening-conditional-percent">%</tspan></text>
-            <text x="300" y="148" text-anchor="middle" class="opening-prior"><tspan x="300">Probability of playing</tspan><tspan x="300" dy="18">not on clay: <tspan class="opening-prior-value">70%</tspan></tspan></text>
-          </g>
-          <path d="M100 175 V185 Q100 194 110 194 H190 Q200 194 200 204 M300 175 V185 Q300 194 290 194 H210 Q200 194 200 204 V219" class="opening-flow" marker-end="url(#opening--arrow)" />
-          <text x="200" y="245" text-anchor="middle" class="opening-reconstruction-title">Reconstructed overall forecast</text>
-          <text x="200" y="282" text-anchor="middle" class="opening-calculation">0.30 ⋅ 0.10 + 0.70 ⋅ 0.60 = <tspan class="opening-aggregate">45%</tspan></text>
-        </svg>
-      </div>
-    </div>
-    <div class="opening-box opening-test">
-      <p class="opening-test-title">Law of Total Probability</p>
-      <p class="opening-test-principle">Coherent forecasts must satisfy this equality.</p>
-      <div class="opening-comparison" role="img" aria-label="The law of total probability requires equality between the direct forecast and the weighted aggregate. Does the direct forecast of 55% equal the weighted aggregate of 45%?">
-        <div class="opening-comparison-value opening-comparison-direct" aria-hidden="true"><strong>55<span>%</span></strong><span>Direct forecast</span></div>
-        <div class="opening-comparison-symbol" aria-hidden="true"><span>=<sup>?</sup></span></div>
-        <div class="opening-comparison-value opening-comparison-aggregate" aria-hidden="true"><strong>45<span>%</span></strong><span>Weighted aggregate</span></div>
-      </div>
-      <div class="opening-consistency-check">
-        <p class="opening-test-title">Split Consistency Check</p>
-        <p class="opening-test-equation"><span>Pass if</span><span class="opening-check-math">$|0.55 - 0.45| &lt; \varepsilon$</span><span>for a fixed tolerance $\varepsilon &gt; 0$</span></p>
-      </div>
-    </div>
-  </div><figcaption><em><strong>Do the model’s forecasts fit together?</strong> Weighting conditional forecasts by the model’s own prior probabilities should recover its direct forecast. The check passes when the absolute difference is less than the tolerance $\varepsilon$.</em></figcaption></figure>
-</div>
-<section id="abstract"><h2 class="visually-hidden">Abstract</h2>
-<div class="paragraph-with-note"><p>Decision models are artificial intelligence (AI) systems designed to return structured answers—such as choices, scores, and probabilities—with reliable estimates of uncertainty. Models such as Jev<a class="footnote-ref" href="#note-jev" aria-label="footnote 1">1</a><span role="note" class="sidenote"><span id="note-jev" class="sidenote-item"><span class="sidenote-index">1</span><a href="https://typesafe.ai/">Jev by TypeSafe AI</a>.</span><span id="note-laya" class="sidenote-item"><span class="sidenote-index">2</span><a href="https://laya.convaiinnovations.com/">Laya by Convai Innovations</a>.</span><span id="note-lotp" class="sidenote-item"><span class="sidenote-index">3</span>The law of total probability states $P(E) = \sum_i P(E\mid A_i)P(A_i)$, where $\{A_i\}_i$ is a set of mutually exclusive and collectively exhaustive events.</span></span> and Laya<a class="footnote-ref" href="#note-laya" aria-label="footnote 2">2</a> promise to make AI judgments more dependable and easier to integrate into automated decisions. But reliability requires more than individually plausible predictions: predictions made under different assumptions must also fit together. For example, suppose a model considers rain and dry weather equally likely. If it predicts a 60% chance of a traffic jam when it rains and a 20% chance when it stays dry, its overall estimate should be 40%. Any other estimate would be inconsistent with these predictions. This agreement between unconditional and conditional probability estimates is the form of statistical self-consistency we examine in this post. The principle extends beyond the two weather scenarios. Whenever events are mutually exclusive and collectively exhaustive, the overall prediction should match the average of the conditional predictions, weighted by the events’ probabilities. The law of total probability<a class="footnote-ref" href="#note-lotp" aria-label="footnote 3">3</a> formalizes this requirement and gives us a way to test a model’s internal consistency without knowing the true outcomes. In this blog post, we ask whether decision models deliver on their promise of greater reliability by subjecting nine popular decision models to this check.</p></div>
-<aside aria-labelledby="paper-note-title" id="paper-note" class="paper-note">
-<p class="paper-note-title" id="paper-note-title"><svg class="paper-note-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 11v6" /><circle cx="12" cy="7.5" r=".8" fill="currentColor" stroke="none" /></svg><span><strong>About this post</strong></span></p>
-<p>This blog post complements our NeurIPS paper, <a href="https://arxiv.org/abs/2607.15277">Partition, Prompt, Aggregate: Statistical Self-Consistency in Language Models</a>, with additional evaluations of split consistency in nine decision models.</p>
-</aside>
-</section><section id="method"><h2 data-toc-label="Method">Method</h2>
-<div class="paragraph-with-note"><p>Consider a forecasting question about whether an event $E$ will occur. We can ask a model for its probability directly, or ask for conditional forecasts under two complementary scenarios, defined by whether a condition $A$ holds or not. In the <a href="#opening">opening figure</a>, $E$ is the event that Federer wins a match against Nadal, and $A$ is the condition that the match is played on clay. We combine the forecasts for clay and other surfaces using the model's probabilities for those scenarios. The events $A$ and $\neg A$ are mutually exclusive and collectively exhaustive. A coherent set of probabilities must therefore satisfy the law of total probability:</p></div>
-<div class="display-equation">$$P(E) = P(E\mid A)P(A) + P(E\mid \neg A)P(\neg A).$$</div>
-<div class="paragraph-with-note"><p>The right-hand side reconstructs the overall forecast by weighting each conditional forecast by the probability of its scenario. The left-hand side expresses the probability of the same event without conditioning on either scenario. Both expressions describe the same quantity, so they should agree. We test this agreement using one binary split per forecasting question and the model's own estimates of both the event probabilities and the priors. No observed outcomes or reference probabilities are needed.</p></div>
-<aside aria-labelledby="prior-work-title" id="prior-work" class="paper-note">
-<p class="paper-note-title" id="prior-work-title"><svg class="paper-note-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5.5C9 3.5 5 3.5 2 5v15c3-1.5 7-1.5 10 .5 3-2 7-2 10-.5V5c-3-1.5-7-1.5-10 .5Z" /><path d="M12 5.5v15" /></svg><span><strong>Relation to Prior Work</strong></span></p>
-<p>This post extends the work of Paleka et al.<a class="footnote-ref" href="#note-paleka" aria-label="footnote 4">4</a><span role="note" class="sidenote"><span id="note-paleka" class="sidenote-item"><span class="sidenote-index">4</span><a href="https://arxiv.org/abs/2412.18544">Consistency Checks for Language Model Forecasters</a>, by Daniel Paleka, Abhimanyu Pallavi Sudhir, Alejandro Alvarez, Vineeth Bhat, Adam Shen, Evan Wang, and Florian Tramèr.</span><span id="note-paper" class="sidenote-item"><span class="sidenote-index">5</span><a href="https://arxiv.org/abs/2607.15277">Partition, Prompt, Aggregate: Statistical Self-Consistency in Language Models</a>, by Patrik Wolf, Thomas Kleine Buening, Andreas Krause, and Celestine Mendler-Dünner.</span></span> by applying their <code>ExpEvidence</code> check to decision models. It also supplements our paper<a class="footnote-ref" href="#note-paper" aria-label="footnote 5">5</a> by evaluating this additional model class. The check tests <em>split consistency</em> by assessing whether a direct forecast agrees with the aggregate reconstructed from a binary split. This is a necessary condition for coherent probabilistic predictions, but satisfying it alone does not establish forecasting accuracy or calibration. The <a href="#broader-framework">appendix</a> describes our paper’s broader evaluation framework.</p>
-</aside>
-</section><section id="evaluation"><h2 data-toc-label="Evaluation">Evaluation: One split per forecasting question</h2>
-<div class="paragraph-with-note"><p>We evaluate nine decision models<a class="footnote-ref" href="#note-models" aria-label="footnote 6">6</a><span role="note" class="sidenote"><span id="note-models" class="sidenote-item"><span class="sidenote-index">6</span>The nine decision models evaluated are: Liquid D1, Liquid D1 Ultra, Jev 1.13, Jev 1.14, GPT-6 Luna Decisions, Microsoft Decision 1, Drex 1.5, Mercury Decide, and Laya.</span><span id="note-dataset" class="sidenote-item"><span class="sidenote-index">7</span><a href="https://github.com/dpaleka/consistency-forecasting">Consistency-forecasting dataset and evaluation code</a>. We use 28 questions sampled from its high-quality synthetic subset and augment them with question-specific split conditions.</span></span> on <strong>28 synthetic forecasting questions</strong>, which we sampled from the high-quality subset of the consistency-forecasting dataset.<a class="footnote-ref" href="#note-dataset" aria-label="footnote 7">7</a> We augment each question with one synthetic binary split tailored to its subject. Each split defines a meaningful condition and its complement, and remains fixed across the evaluated models. This gives every model the same set of 28 question–split pairs. For each pair, we elicit the direct probability of the forecast event, its probability conditional on each branch, and the probabilities assigned to the split branches. We then combine the two conditional forecasts using the branch probabilities as weights and compare the result with the direct forecast.</p></div>
-<h3 id="split-consistency" data-toc-label="Split consistency">Split consistency checks</h3>
-<div class="paragraph-with-note"><p>For each question, let $\widehat{p}$ denote the model's direct probability estimate and $\widehat{p}_{\mathrm{agg}}$ the aggregate reconstructed from the two branches of the single split. The question passes the split consistency check if</p></div>
-<div class="display-equation">$$|\widehat{p} - \widehat{p}_{\mathrm{agg}}| &lt; \varepsilon.$$</div>
-<div class="paragraph-with-note"><p>The tolerance $\varepsilon$ specifies how much disagreement we allow between the direct estimate and the aggregate.</p></div>
-<h3 id="consistency-score" data-toc-label="Scoring">Averaging over questions</h3>
-<div class="paragraph-with-note"><p>We collect the tests in a set $\mathcal{Q}$, with each test pairing a forecasting question with a fixed binary split. For test $q$, we write the direct estimate as $\widehat{p}_q$ and the reconstructed aggregate as $\widehat{p}_{q,\mathrm{agg}}$.</p></div>
-<aside class="takeaway-box">
-<p><strong>Definition (Split consistency score).</strong>
-The split consistency score is the fraction of tests in $\mathcal{Q}$ that pass at tolerance $\varepsilon$:</p>
-<div class="display-equation">$$\mathrm{SC}_{\varepsilon}(\mathcal{Q}) = \frac{1}{|\mathcal{Q}|}\sum_{q\in\mathcal{Q}} \mathbf{1}\big\{|\widehat{p}_q-\widehat{p}_{q,\mathrm{agg}}|&lt;\varepsilon\big\}.$$</div>
-<p>Here, the indicator $\mathbf{1}$ equals one when the check passes and zero otherwise.</p>
-</aside>
-<div class="paragraph-with-note"><p>In this post, we instantiate $\mathcal{Q}$ as the set of 28 forecasting questions, each paired with its fixed binary split. We report scores at $\varepsilon\in\{0.05,0.10,0.20\}$, allowing discrepancies of less than 5, 10, and 20 percentage points, respectively. These three thresholds show how the assessment changes as we relax the consistency requirement.</p></div>
-</section><section id="findings"><h2 data-toc-label="Findings">Findings: Even decision models violate self-consistency</h2>
-<div class="paragraph-with-note"><p>The results below show split consistency scores at the three tolerances for the nine decision models in our main evaluation. We also include three large language models (LLMs) for comparison. Higher scores indicate that more of a model's direct forecasts agree with their reconstructed counterparts.</p></div>
-<figure id="main-result" class="interactive-plot"><img class="plot-fallback" src="figures/overall_llm.svg" alt="Split consistency scores for nine decision models (blue) and three comparison LLMs (orange) at tolerances of 0.05, 0.10, and 0.20. Every model scores below one at all three tolerances."><figcaption><em><strong>Decision models violate split consistency.</strong> Our main evaluation covers nine decision models (blue), with three LLMs (orange) included for comparison. Each bar reports the fraction of 28 forecasting questions for which the model’s direct and reconstructed probabilities differ by less than the indicated tolerance. Higher scores indicate greater self-consistency. Perhaps surprisingly, decision models even tend to be slightly less split consistent than LLMs.</em></figcaption></figure>
-<div class="paragraph-with-note"><p>Among the decision models, Liquid D1 Ultra and Drex 1.5 tie for the highest score at the strictest tolerance, $\varepsilon=0.05$, each passing only 11 of the 28 checks (39.3%). Raising the tolerance to $\varepsilon=0.10$ puts Jev 1.14 ahead of the other decision models, with 18 passing checks (64.3%).<a class="footnote-ref" href="#note-tolerance" aria-label="footnote 8">8</a><span role="note" class="sidenote"><span id="note-tolerance" class="sidenote-item"><span class="sidenote-index">8</span>Scores can only increase or remain unchanged as the tolerance grows, because every check that passes a stricter threshold also passes a more permissive one. These gains therefore reflect the relaxed acceptance criterion rather than changes in the underlying forecasts.</span></span> Even at the most permissive tolerance, $\varepsilon=0.20$, no decision model passes all checks. Scores range widely, from 25.0% for Laya to 82.1% for Liquid D1 Ultra, which leads this group with 23 of the 28 checks passed. For its remaining five questions, even this leading decision model's direct and reconstructed forecasts differ by at least 20 percentage points. Despite substantial differences in performance, every evaluated decision model thus exhibits split consistency violations at every tested tolerance.</p></div>
-<div class="paragraph-with-note"><p>The comparison LLMs score higher than all nine decision models at the strictest tolerance, passing between 13 and 18 checks. At $\varepsilon=0.10$, GPT-6 Luna passes 20 checks (71.4%), while GPT-4o mini and Mercury 2.5 each match the leading decision model. At $\varepsilon=0.20$, all three LLMs again exceed the best decision model. On these 28 questions, all three comparison LLMs therefore match or exceed the strongest decision model at every tolerance, although none achieves full split consistency.</p></div>
-<aside aria-labelledby="takeaway-title" id="takeaway" class="paper-note">
-<p class="paper-note-title" id="takeaway-title"><svg class="paper-note-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17v-1.5a6.5 6.5 0 1 1 6 0V17Z" /><path d="M9 20h6m-5 3h4" /></svg><span><strong>Takeaway</strong></span></p>
-<p>Even models trained specifically for decision tasks and calibration, with structured probability outputs, can produce probabilistically incoherent forecasts. Every evaluated decision model produces direct and conditional forecasts that fail to fit together on some of the tested questions, even at a tolerance of 20 percentage points.</p>
-</aside>
-</section><section id="ranking"><h2 data-toc-label="Rankings">Sensitivity: Consistency rankings are stable across thresholds</h2>
-<div class="paragraph-with-note"><p>The choice of tolerance changes the absolute scores, but does it also change which models perform best? We compare the model rankings at the same three thresholds in the <a href="#rankings">ranking figure</a> below.</p></div>
-<figure id="rankings" class="interactive-plot"><img class="plot-fallback" src="figures/self_consistency_rankings.svg" alt="Model rankings across the three tolerances. The same five models remain in the leading group, while their internal ordering changes; Laya remains last."><figcaption><em><strong>Broad performance groups persist as the tolerance changes.</strong> Lines connect each model's displayed position at $\varepsilon=0.05$, $0.10$, and $0.20$; labels report the fraction of checks passed.</em></figcaption></figure>
-<div class="paragraph-with-note"><p>The same five models occupy the leading group throughout: Liquid D1 Ultra, Drex 1.5, Liquid D1, Jev 1.14, and Jev 1.13. Laya has the lowest score at all three thresholds. These stable groupings suggest that the broad comparison is not driven by a single choice of tolerance. However, there are some changes in the internal ordering of the leading group. We conclude that <strong>broad relative performance is mostly preserved</strong>, while exact ranks depend on the tolerance and require attention to tied scores.</p></div>
-</section><section id="conclusion"><h2 data-toc-label="Outlook">Outlook</h2>
-<div class="paragraph-with-note"><p>Our supplementary evaluation applies the <code>ExpEvidence</code> check of Paleka et al.<a class="footnote-ref" href="#note-paleka" aria-label="footnote 4">4</a> to nine decision models, extending the split consistency analysis in our paper<a class="footnote-ref" href="#note-paper" aria-label="footnote 5">5</a> to a new model class. Across 28 synthetic forecasting questions, every model violates the consistency requirement on some question–split pairs at each of the three tested tolerances. Although absolute scores change with the tolerance, the leading and trailing groups remain broadly stable. These findings support evaluating consistency across a model’s predictions as a distinct dimension of model quality, alongside accuracy and calibration. Split consistency offers a reference-free way to assess this dimension, exposing disagreements among a model’s own probability estimates before forecast outcomes are known.</p></div>
-<div class="paragraph-with-note"><p>A next step is to establish how broadly these findings hold by expanding the question set and varying split conditions and prompt formulations. Beyond evaluation, self-consistency could also serve as an optimization target. Can training or inference-time interventions reduce disagreements between direct forecasts and their conditional reconstructions? Testing whether such improvements generalize to unseen questions and splits would help distinguish a broader gain in consistency from adaptation to a particular evaluation setup. Evaluations with observed outcomes should also examine whether consistency gains improve accuracy and calibration or introduce tradeoffs between these dimensions.</p></div>
-</section><section id="citation"><h2>Citation</h2>
-<div class="paragraph-with-note"><p>To cite this supplementary evaluation:</p></div>
-<pre class="code-block"><code data-language="text">Patrik Wolf, Thomas Kleine Buening, Andreas Krause, and Celestine Mendler-Dünner.
-"Split Consistency in Decision Models." Blog post, October 2026.
-</code></pre>
-<pre class="code-block"><code data-language="bibtex">@misc{wolf2026decisionmodels,
-  title  = {Split Consistency in Decision Models},
-  author = {Wolf, Patrik and Kleine Buening, Thomas and Krause, Andreas and Mendler-Dünner, Celestine},
-  year   = {2026},
-  month  = oct,
-  note   = {Blog post; supplementary evaluation for Partition, Prompt, Aggregate: Statistical Self-Consistency in Language Models}
-}
-</code></pre>
-</section><section id="broader-framework"><details class="section-disclosure"><summary><h2 data-toc-hidden="true">The broader evaluation framework</h2></summary><div class="section-disclosure-content">
-<div class="paragraph-with-note"><p>Our paper studies the same consistency principle in a broader population setting. A population can be partitioned repeatedly into smaller subgroups, forming a tree of increasingly fine partitions. Conditional estimates for those subgroups can be combined using their prior probabilities to reconstruct an overall prediction. Comparing that aggregate with the direct estimate at the root tests statistical self-consistency.</p></div>
-<div class="paragraph-with-note"><p>The framework also allows comparisons with ground-truth data to assess predictive accuracy. Such comparisons answer a separate question: whether the estimates agree with observed outcomes. The evaluation in this post uses one binary split per forecasting question and compares only the model's own estimates; it uses neither deeper partition trees nor ground-truth comparisons.</p></div>
-<figure id="teaser" class="interactive-plot"><div class="teaser-diagram-scroll" tabindex="0" role="region" aria-label="Evaluation framework diagram">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 410" class="teaser-diagram" role="img" aria-labelledby="teaser--diagram-title teaser--diagram-description">
-      <title id="teaser--diagram-title">The split-consistency evaluation framework</title>
-      <desc id="teaser--diagram-description">The paper's evaluation framework: a population is recursively split into subgroups, conditional estimates are aggregated, and the aggregates are compared with the root estimate and ground truth.</desc>
-      <defs><marker id="teaser--diagram-arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M 0 0 L 8 4 L 0 8 L 2 4 Z" fill="currentColor" /></marker></defs>
-      <g id="teaser--diagram-population" data-stage="partition"><rect id="teaser--diagram-level-band-0" x="325" y="67" width="330" height="46" rx="23" class="teaser-level-band" /><rect id="teaser--diagram-level-band-1" x="325" y="137" width="330" height="46" rx="23" class="teaser-level-band" /><rect id="teaser--diagram-level-band-2" x="325" y="207" width="330" height="46" rx="23" class="teaser-level-band" /><rect id="teaser--diagram-level-band-3" x="325" y="277" width="330" height="46" rx="23" class="teaser-level-band" /><g id="teaser--diagram-branches"><path id="teaser--diagram-branch-1-0" data-depth="1" d="M 490 90 L 415 160" class="teaser-branch teaser-older-branch" /><path id="teaser--diagram-branch-1-1" data-depth="1" d="M 490 90 L 565 160" class="teaser-branch teaser-younger-branch" /><path id="teaser--diagram-branch-2-0" data-depth="2" d="M 415 160 L 370 230" class="teaser-branch" /><path id="teaser--diagram-branch-2-1" data-depth="2" d="M 415 160 L 450 230" class="teaser-branch" /><path id="teaser--diagram-branch-2-2" data-depth="2" d="M 565 160 L 530 230" class="teaser-branch" /><path id="teaser--diagram-branch-2-3" data-depth="2" d="M 565 160 L 610 230" class="teaser-branch" /><path id="teaser--diagram-branch-3-0" data-depth="3" d="M 370 230 L 350 300" class="teaser-branch" /><path id="teaser--diagram-branch-3-1" data-depth="3" d="M 370 230 L 390 300" class="teaser-branch" /><path id="teaser--diagram-branch-3-2" data-depth="3" d="M 450 230 L 430 300" class="teaser-branch" /><path id="teaser--diagram-branch-3-3" data-depth="3" d="M 450 230 L 470 300" class="teaser-branch" /><path id="teaser--diagram-branch-3-4" data-depth="3" d="M 530 230 L 510 300" class="teaser-branch" /><path id="teaser--diagram-branch-3-5" data-depth="3" d="M 530 230 L 550 300" class="teaser-branch" /><path id="teaser--diagram-branch-3-6" data-depth="3" d="M 610 230 L 590 300" class="teaser-branch" /><path id="teaser--diagram-branch-3-7" data-depth="3" d="M 610 230 L 630 300" class="teaser-branch" /></g><g id="teaser--diagram-level-0" data-depth="0"><circle cx="490" cy="90" r="18" fill="#b3d190" id="teaser--diagram-node-0-0" class="teaser-node" data-node="0-0" /></g><g id="teaser--diagram-level-1" data-depth="1"><circle cx="415" cy="160" r="18" fill="#cee1b2" id="teaser--diagram-node-1-0" class="teaser-node teaser-older-branch" data-node="1-0" /><circle cx="565" cy="160" r="18" fill="#83b347" id="teaser--diagram-node-1-1" class="teaser-node teaser-younger-branch" data-node="1-1" /></g><g id="teaser--diagram-level-2" data-depth="2"><circle cx="370" cy="230" r="18" fill="#edf5df" id="teaser--diagram-node-2-0" class="teaser-node" data-node="2-0" /><circle cx="450" cy="230" r="18" fill="#b3d190" id="teaser--diagram-node-2-1" class="teaser-node" data-node="2-1" /><circle cx="530" cy="230" r="18" fill="#83b347" id="teaser--diagram-node-2-2" class="teaser-node" data-node="2-2" /><circle cx="610" cy="230" r="18" fill="#34551b" id="teaser--diagram-node-2-3" class="teaser-node" data-node="2-3" /></g><g id="teaser--diagram-level-3" data-depth="3"><circle cx="350" cy="300" r="15" fill="#ffffff" id="teaser--diagram-node-3-0" class="teaser-node" data-node="3-0" /><circle cx="390" cy="300" r="15" fill="#e7f5ce" id="teaser--diagram-node-3-1" class="teaser-node" data-node="3-1" /><circle cx="430" cy="300" r="15" fill="#cfe2b3" id="teaser--diagram-node-3-2" class="teaser-node" data-node="3-2" /><circle cx="470" cy="300" r="15" fill="#aecf88" id="teaser--diagram-node-3-3" class="teaser-node" data-node="3-3" /><circle cx="510" cy="300" r="15" fill="#83b347" id="teaser--diagram-node-3-4" class="teaser-node" data-node="3-4" /><circle cx="550" cy="300" r="15" fill="#577b2f" id="teaser--diagram-node-3-5" class="teaser-node" data-node="3-5" /><circle cx="590" cy="300" r="15" fill="#34551b" id="teaser--diagram-node-3-6" class="teaser-node" data-node="3-6" /><circle cx="630" cy="300" r="15" fill="#111111" id="teaser--diagram-node-3-7" class="teaser-node" data-node="3-7" /></g><text x="490" y="363" class="teaser-stage-label" text-anchor="middle">Partition population</text><text x="490" y="388" class="teaser-stage-label" text-anchor="middle">into subgroups</text></g>
-      <g id="teaser--diagram-context-links"><path id="teaser--diagram-question-context-link" d="M 156 151 C 20 85 78 65 182 65" class="teaser-arrow teaser-context-link" marker-end="url(#teaser--diagram-arrowhead)" /><path id="teaser--diagram-question-branch-link" d="M 275 215 C 315 213 334 164 390 160" class="teaser-arrow teaser-context-link" marker-end="url(#teaser--diagram-arrowhead)" /></g>
-      <g id="teaser--diagram-question" data-stage="elicit">
-    <rect x="10" y="151" width="265" height="130" rx="22" class="teaser-question-card" />
-    <text x="27" y="180" class="teaser-card-title" text-anchor="start">Question:</text>
-    <text x="27" y="209" text-anchor="start">What is the probability</text>
-    <text x="27" y="237" text-anchor="start">that their yearly income</text>
-    <text x="27" y="265" text-anchor="start">is above $50k?</text>
-    <text x="144" y="363" class="teaser-stage-label" text-anchor="middle">Elicit LLM</text><text x="144" y="388" class="teaser-stage-label" text-anchor="middle">estimates via ICL</text>
-  </g><g id="teaser--diagram-contexts" data-stage="condition">
-    <g id="teaser--diagram-context-older">
-      <rect x="190" y="17" width="222" height="100" rx="22" class="teaser-context-card teaser-context-older" />
-      <text x="205" y="45" class="teaser-card-title" text-anchor="start">Context:</text>
-      <text x="205" y="74">A person <tspan class="teaser-older-text">at least</tspan></text>
-      <text x="205" y="102" class="teaser-older-text" text-anchor="start">20 years old.</text>
-    </g>
-    <g id="teaser--diagram-context-younger">
-      <rect x="536" y="17" width="238" height="100" rx="22" class="teaser-context-card teaser-context-younger" />
-      <text x="551" y="45" class="teaser-card-title" text-anchor="start">Context:</text>
-      <text x="551" y="74">A person <tspan class="teaser-younger-text">younger</tspan></text>
-      <text x="551" y="102" class="teaser-younger-text" text-anchor="start">than 20 years.</text>
-    </g>
-  </g><g id="teaser--diagram-aggregation" data-stage="aggregate">
-    <rect x="835" y="57" width="70" height="276" rx="26" class="teaser-level-band" />
-    <g id="teaser--diagram-aggregate-0" data-depth="0"><path id="teaser--diagram-aggregate-arrow-0" d="M 785 90 H 810" class="teaser-arrow" marker-end="url(#teaser--diagram-arrowhead)" /><circle cx="870" cy="90" r="22" fill="#b3d190" class="teaser-pie-outline" /></g><g id="teaser--diagram-aggregate-1" data-depth="1"><path id="teaser--diagram-aggregate-arrow-1" d="M 667 160 H 810" class="teaser-arrow" marker-end="url(#teaser--diagram-arrowhead)" /><path id="teaser--diagram-aggregate-sector-1-0" d="M 870 160 L 870.000 138.000 A 22 22 0 0 1 870.000 182.000 Z" fill="#cee1b2" class="teaser-sector" /><path id="teaser--diagram-aggregate-sector-1-1" d="M 870 160 L 870.000 182.000 A 22 22 0 0 1 870.000 138.000 Z" fill="#83b347" class="teaser-sector" /><circle cx="870" cy="160" r="22" fill="none" class="teaser-pie-outline" /></g><g id="teaser--diagram-aggregate-2" data-depth="2"><path id="teaser--diagram-aggregate-arrow-2" d="M 667 230 H 810" class="teaser-arrow" marker-end="url(#teaser--diagram-arrowhead)" /><path id="teaser--diagram-aggregate-sector-2-0" d="M 870 230 L 870.000 208.000 A 22 22 0 0 1 892.000 230.000 Z" fill="#edf5df" class="teaser-sector" /><path id="teaser--diagram-aggregate-sector-2-1" d="M 870 230 L 892.000 230.000 A 22 22 0 0 1 870.000 252.000 Z" fill="#b3d190" class="teaser-sector" /><path id="teaser--diagram-aggregate-sector-2-2" d="M 870 230 L 870.000 252.000 A 22 22 0 0 1 848.000 230.000 Z" fill="#83b347" class="teaser-sector" /><path id="teaser--diagram-aggregate-sector-2-3" d="M 870 230 L 848.000 230.000 A 22 22 0 0 1 870.000 208.000 Z" fill="#34551b" class="teaser-sector" /><circle cx="870" cy="230" r="22" fill="none" class="teaser-pie-outline" /></g><g id="teaser--diagram-aggregate-3" data-depth="3"><path id="teaser--diagram-aggregate-arrow-3" d="M 667 300 H 810" class="teaser-arrow" marker-end="url(#teaser--diagram-arrowhead)" /><path id="teaser--diagram-aggregate-sector-3-0" d="M 870 300 L 870.000 278.000 A 22 22 0 0 1 885.556 284.444 Z" fill="#ffffff" class="teaser-sector" /><path id="teaser--diagram-aggregate-sector-3-1" d="M 870 300 L 885.556 284.444 A 22 22 0 0 1 892.000 300.000 Z" fill="#e7f5ce" class="teaser-sector" /><path id="teaser--diagram-aggregate-sector-3-2" d="M 870 300 L 892.000 300.000 A 22 22 0 0 1 885.556 315.556 Z" fill="#cfe2b3" class="teaser-sector" /><path id="teaser--diagram-aggregate-sector-3-3" d="M 870 300 L 885.556 315.556 A 22 22 0 0 1 870.000 322.000 Z" fill="#aecf88" class="teaser-sector" /><path id="teaser--diagram-aggregate-sector-3-4" d="M 870 300 L 870.000 322.000 A 22 22 0 0 1 854.444 315.556 Z" fill="#83b347" class="teaser-sector" /><path id="teaser--diagram-aggregate-sector-3-5" d="M 870 300 L 854.444 315.556 A 22 22 0 0 1 848.000 300.000 Z" fill="#577b2f" class="teaser-sector" /><path id="teaser--diagram-aggregate-sector-3-6" d="M 870 300 L 848.000 300.000 A 22 22 0 0 1 854.444 284.444 Z" fill="#34551b" class="teaser-sector" /><path id="teaser--diagram-aggregate-sector-3-7" d="M 870 300 L 854.444 284.444 A 22 22 0 0 1 870.000 278.000 Z" fill="#111111" class="teaser-sector" /><circle cx="870" cy="300" r="22" fill="none" class="teaser-pie-outline" /></g>
-    <text x="800" y="363" class="teaser-stage-label" text-anchor="middle">Reconstruct aggregates via</text><text x="800" y="388" class="teaser-stage-label" text-anchor="middle">law of total probability</text>
-  </g><g id="teaser--diagram-comparison" data-stage="compare">
-    <path id="teaser--diagram-aggregate-bracket" class="teaser-bracket" d="M 916 90 H 945 Q 955 90 955 100 V 290 Q 955 300 945 300 H 916 M 916 160 H 955 M 916 230 H 955" />
-    <path id="teaser--diagram-compare-root" d="M 955 195 H 980 Q 995 195 995 180 V 140 Q 995 130 1005 130 H 1010" class="teaser-arrow" marker-end="url(#teaser--diagram-arrowhead)" />
-    <path id="teaser--diagram-compare-truth" d="M 955 195 H 980 Q 995 195 995 210 V 260 Q 995 270 1005 270 H 1010" class="teaser-arrow" marker-end="url(#teaser--diagram-arrowhead)" />
-    <g id="teaser--diagram-root-comparison-symbol"><text x="1035" y="114" class="teaser-comparison-question" text-anchor="middle">?</text><text x="1035" y="138" class="teaser-comparison-equals" text-anchor="middle">=</text></g>
-    <g id="teaser--diagram-truth-comparison-symbol"><text x="1035" y="254" class="teaser-comparison-question" text-anchor="middle">?</text><text x="1035" y="278" class="teaser-comparison-equals" text-anchor="middle">=</text></g>
-    <g id="teaser--diagram-root-estimate">
-      <rect x="1060" y="65" width="123" height="128" rx="22" class="teaser-level-band" />
-      <circle cx="1121" cy="102" r="22" fill="#b3d190" class="teaser-pie-outline" />
-      <text x="1121" y="150" text-anchor="middle">Root</text><text x="1121" y="177" text-anchor="middle">estimate</text>
-    </g>
-    <g id="teaser--diagram-ground-truth">
-      <rect x="1060" y="215" width="123" height="128" rx="22" class="teaser-level-band" />
-      <circle cx="1121" cy="252" r="22" fill="none" class="teaser-pie-outline" />
-      <path id="teaser--diagram-ground-truth-check" d="M 1109 251 L 1118 261 L 1133 243" class="teaser-check" />
-      <text x="1121" y="300" text-anchor="middle">Ground</text><text x="1121" y="327" text-anchor="middle">truth</text>
-    </g>
-    <text x="1065" y="363" class="teaser-stage-label" text-anchor="middle">Evaluate self-consistency</text><text x="1065" y="388" class="teaser-stage-label" text-anchor="middle">and alignment</text>
-  </g>
-    </svg>
-  </div><figcaption><em><strong>From conditional estimates to an overall prediction.</strong> The paper's framework reconstructs population-level estimates from conditional estimates and subgroup probabilities. Comparing a reconstructed estimate with the direct root estimate tests statistical self-consistency; comparison with ground truth assesses accuracy. Deeper partitions and ground-truth comparisons are part of the broader framework shown here.</em></figcaption></figure>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Self-Distillation</title>
+        <link rel="stylesheet" href="common.css" />
+        <style>
+            html,
+            body {
+                height: 100%;
+            }
 
+            body {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 100%;
+                background: #ffffff;
+                color: #1f2937;
+                line-height: 1.5;
+            }
 
-</div></details></section>
-</article>
-  </main>
+            a,
+            a.visited {
+                text-decoration: none;
+            }
 
-  <footer class="site-footer" aria-label="About this post">
-    <dl class="site-footer-details">
-      <dt>Authors</dt>
-      <dd>Patrik Wolf,  Thomas Kleine Buening, Andreas Krause, Celestine Mendler-Dünner</dd>
-      <dt>Code</dt>
-      <dd><a href="https://github.com/patrikwolf/statistical_self_consistency">View source on GitHub</a></dd>
-    </dl>
-  </footer>
-</body>
+            a:hover,
+            a:focus {
+                text-decoration: underline;
+                text-underline-offset: 4px;
+            }
+
+            .page-title {
+                font-size: clamp(2.5rem, 5vw, 3.25rem);
+                font-weight: 700;
+                margin-top: 0;
+                margin-bottom: 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.875rem;
+                margin-top: 1.875rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+                margin-top: 1.5rem;
+            }
+
+            h3 {
+                font-size: 1.25rem;
+                margin-top: 1.25rem;
+            }
+
+            .page-description {
+                margin-bottom: 2em;
+            }
+
+            .page {
+                display: flex;
+                flex-direction: column;
+                gap: 1.25rem;
+                text-align: center;
+                width: min(92vw, 900px);
+            }
+
+            .link-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .link-list li {
+                flex: 1;
+            }
+
+            .link-list a {
+                display: block;
+                padding: 1rem 1.2rem;
+                border: 1px solid #e5e7eb;
+                border-radius: 12px;
+                font-size: 1.05rem;
+                background: #f9fafb;
+                transition: background 150ms ease, border-color 150ms ease;
+                height: 100%;
+            }
+
+            .link-list a:hover,
+            .link-list a:focus {
+                background: #ffffff;
+                border-color: #cbd5f5;
+            }
+
+            @media (min-width: 720px) {
+                .link-list {
+                    flex-direction: row;
+                    gap: 1rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <article class="page sans">
+            <h1 class="page-title">Split Consistency</h1>
+            <ul class="link-list">
+                <li>
+                    <a href="decision.html">Split Consistency in Decision Models</a>
+                </li>
+            </ul>
+        </article>
+    </body>
 </html>
